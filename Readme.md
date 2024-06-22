@@ -18,6 +18,10 @@ The Online Bookstore API is a RESTful web service built with Django and Django R
    ```bash
    git clone https://github.com/hassanbutt18/Online-Bookstore-API.git
    cd online-bookstore-api
+   then run this command 
+   docker-compose build
+   docker-compose up -d
+
 
    
 

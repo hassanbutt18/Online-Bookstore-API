@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)ub4fegl-!$khzf6j7t7la56k)92rhyhr!6&v0!hgp=q(!rl8p'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+load_dotenv()
+
+DEBUG = os.getenv('DEBUG')
+SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 ALLOWED_HOSTS = []
 
@@ -34,10 +40,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-# 'DEFAULT_FILTER_BACKENDS': (
-#         'django_filters.rest_framework.DjangoFilterBackend',
-#         'rest_framework.filters.SearchFilter',
-#     ),
 }
 
 SIMPLE_JWT = {
@@ -124,11 +126,11 @@ WSGI_APPLICATION = 'OnlineBookstoreAPI.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'myproject',
-        'USER': 'postgres',
-        'PASSWORD': '1234',
-        'HOST': 'db',   # Name of the database service in docker-compose.yml
-        'PORT': '5432',
+        'NAME':  os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('HOST'),   # Name of the database service in docker-compose.yml
+        'PORT': os.getenv('PORT'),
     }
 }
 
