@@ -41,10 +41,12 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+# Retrieve environment variables or use defaults
+
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': int(os.getenv('ACCESS_TOKEN_LIFETIME_DAYS', 30)),
-    'REFRESH_TOKEN_LIFETIME': int(os.getenv('REFRESH_TOKEN_LIFETIME_DAYS', 30)),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
@@ -70,6 +72,19 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=15),
 }
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'Your email host user'
+EMAIL_HOST_PASSWORD = 'Your email password'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -82,6 +97,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'drf_yasg',
+    'django_celery_results',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'bookstore',

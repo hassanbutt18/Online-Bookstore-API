@@ -17,5 +17,3 @@ class CustomUser(AbstractBaseUser):
     def __str__(self):
         return self.email
 
-    class Meta:
-        unique_together = [['email', 'role']]

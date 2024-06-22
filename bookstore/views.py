@@ -3,6 +3,7 @@ from rest_framework import viewsets ,permissions
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
+from bookstore.helper import send_order_confirmation_email
 from bookstore.models import Book ,Author ,Category ,Cart ,CartItem, Order, OrderItem
 from bookstore.serializers import (BookSerializer ,AuthorSerializer ,CategorySerializer ,AuthorSerializerResponse,
                                    BookSerializerResponse,CartSerializer,CartSerializerResponse ,OrderItemSerializer,
@@ -190,7 +191,7 @@ class CartViewSet(viewsets.ModelViewSet):
                 try:
                     instance = Cart.objects.filter(user=request.user)
                     for book in books_list:
-                        print("book",book)
+                        print("book", book)
                         to_del = CartItem.objects.get(cart=instance, book_id=book)
                         to_del.delete()
                     return Response({"msg": "Specific cart items deleted successfully"}, status=200)
@@ -258,6 +259,7 @@ class OrderItemViewSet(viewsets.ModelViewSet):
 
                 # Bulk create order items for efficiency
                 OrderItem.objects.bulk_create(order_items)
+                send_order_confirmation_email([request.user.email])
 
                 # Optionally, clear cart items after creating the order
                 cart_items.delete()
